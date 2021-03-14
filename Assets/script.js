@@ -74,6 +74,10 @@ document.getElementById("locationButton").addEventListener("click", function(eve
         cityWind.textContent = windSpeed
         console.log(cityWind)
         cityWeatherList.appendChild(cityWind)
+        var cityTime = document.createElement("h1")
+        cityTime.textContent = moment().format('ll');  
+        console.log(cityTime)
+        weatherHolder.appendChild(cityTime)
         var cityWeatherIcon= document.createElement("img")
         cityWeatherIcon.src = weatherIconPhoto
         console.log(cityWeatherIcon)
@@ -95,7 +99,18 @@ document.getElementById("locationButton").addEventListener("click", function(eve
         var loopWeatherList = document.createElement("ul")
         loopWeatherList.classList.add("weatherList")
         // create elements for future 5 days 
-        for (let i = 0; i < data.daily.length; i++) {
+        for (let i = 0; i < data.daily.length - 2; i++) {
+            var loopCityTime = document.createElement("h1")
+            loopCityTime.textContent = moment().add(i + 1, 'days').calendar();  
+            console.log(loopCityTime)
+            loopWeatherList.appendChild(loopCityTime)
+
+            var loopIconElement = document.createElement("img")
+            var loopIconId = data.daily[i].weather[0].icon
+            var loopIconPhoto = "http://openweathermap.org/img/wn/" + loopIconId +"@2x.png"
+            loopIconElement.src = loopIconPhoto
+            loopWeatherList.appendChild(loopIconElement)
+
             var loopTempElement = document.createElement("li")
             var loopTemp = data.daily[i].temp.day
             loopTempElement.textContent= loopTemp 
@@ -106,11 +121,8 @@ document.getElementById("locationButton").addEventListener("click", function(eve
             loopHumidElement.textContent= loopHumid
             loopWeatherList.appendChild(loopHumidElement)
 
-            var loopIconElement = document.createElement("img")
-            var loopIconId = data.daily[i].weather[0].icon
-            var loopIconPhoto = "http://openweathermap.org/img/wn/" + loopIconId +"@2x.png"
-            loopIconElement.src = loopIconPhoto
-            loopWeatherList.appendChild(loopIconElement)
+
+            
             
             
            
