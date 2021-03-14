@@ -14,10 +14,10 @@ document.getElementById("locationButton").addEventListener("click", function(eve
     var searchInput = document.getElementById("textArea");
     var location = searchInput.value.trim()
     var inputSectionElement = document.getElementById("container")
-    var temperature = ""
-    var humidity = ""
-    var ultraViolet = ""
-    var windSpeed = ""
+    // var temperature = ""
+    // var humidity = ""
+    // var windSpeed = ""
+    // var ultraViolet = ""
     // api url broken into sections with the location element set as changing variable
     var apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=e52b27c3a12708b53090d96de3562d01';
     console.log("Event Listener is firing")
@@ -28,44 +28,102 @@ document.getElementById("locationButton").addEventListener("click", function(eve
     // ????? HOW DO YOU SAVE DATA OBJECT TO VARIABLES I CAN ONLY GET IT TO CONSOLE LOG?????
     fetch(apiUrl)
     .then(response => response.json())
-    .then(data => console.log(data.main.temp_max));
+    .then(data => {
+        console.log(data)
+        var temperature = data.main.temp_max
+        var humidity = data.main.humidity
+        var windSpeed = data.wind.speed
+        var weatherIcon = data.weather[0].icon
+        var cityLatitude = data.coord.lat
+        var cityLongitude = data.coord.lon
+        var weatherIconPhoto = "http://openweathermap.org/img/wn/" + weatherIcon +"@2x.png"
+        console.log(temperature,"Degrees is the Temperature")
+        console.log(humidity, "% Humidity")
+        console.log(windSpeed,"mph Wind Speed")
+        console.log(cityLatitude)
+        console.log(cityLongitude)
 
 
 
-    // create new element that house the data we are trying to pull from the API. weatherHolder will be the main container
-    var weatherHolder = document.getElementById("weatherDiv")
-    var weatherContainer = document.createElement("div")
-    weatherHolder.appendChild(weatherContainer)
-    console.log(weatherHolder)
+        // create new element that house the data we are trying to pull from the API. weatherHolder will be the main container
+        var weatherHolder = document.getElementById("weatherDiv")
+        var weatherContainer = document.createElement("div")
+        weatherHolder.appendChild(weatherContainer)
+        console.log(weatherHolder)
 
-    // create element that will hold city's name
-    var cityHeader = document.createElement("div")
-    cityHeader.classList.add("cityHeader")
-    cityHeader.textContent = location
-    weatherHolder.appendChild(cityHeader)
-    console.log(cityHeader)
-    console.log(weatherHolder)
+        // create element that will hold city's name
+        var cityHeader = document.createElement("div")
+        cityHeader.classList.add("cityHeader")
+        cityHeader.textContent = location
+        weatherHolder.appendChild(cityHeader)
+        console.log(cityHeader)
+        console.log(weatherHolder)
 
-    // create element that holds list of city's weather
-    
-    // var humidity = data.main.humidity
-    // var ultraViolet = data.main.
-    // var windSpeed = data.main
-    var cityWeatherList = document.createElement("ul")
-    cityWeatherList.classList.add("weatherList")
-    var cityTemperature = document.createElement("li")
-    cityWeatherList.appendChild(cityTemperature)
-    var cityHumidity = document.createElement("li")
-    cityWeatherList.appendChild(cityHumidity)
-    var cityWind = document.createElement("li")
-    cityWeatherList.appendChild(cityWind)
-    var cityUv = document.createElement("li")
-    cityWeatherList.appendChild(cityUv)
-    weatherHolder.appendChild(cityWeatherList)
-    console.log(weatherHolder)
-    
-    
-    
+        // create element that holds list of city's weather
+        var cityWeatherList = document.createElement("ul")
+        cityWeatherList.classList.add("weatherList")
+        var cityTemperature = document.createElement("li")
+        cityTemperature.textContent = temperature
+        console.log(cityTemperature)
+        cityWeatherList.appendChild(cityTemperature)
+        var cityHumidity = document.createElement("li")
+        cityHumidity.textContent = humidity
+        console.log(cityHumidity)
+        cityWeatherList.appendChild(cityHumidity)
+        var cityWind = document.createElement("li")
+        cityWind.textContent = windSpeed
+        console.log(cityWind)
+        cityWeatherList.appendChild(cityWind)
+        var cityWeatherIcon= document.createElement("img")
+        cityWeatherIcon.src = weatherIconPhoto
+        console.log(cityWeatherIcon)
+        weatherHolder.appendChild(cityWeatherIcon)
+         // function that takes lat and lon and gets UV from the other API
+        var oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+cityLatitude+"&lon="+cityLongitude+"&units=imperial&appid=e52b27c3a12708b53090d96de3562d01"
+        fetch(oneCallUrl)
+        .then(response => response.json())
+        .then(data => {
+        console.log(data)
+        var cityUv = document.createElement("li")
+        cityUv.textContent = data.current.uvi
+        cityWeatherList.appendChild(cityUv)
+        weatherHolder.appendChild(cityWeatherList)
+        console.log(weatherHolder)
+
+
+
+        var loopWeatherList = document.createElement("ul")
+        loopWeatherList.classList.add("weatherList")
+        // create elements for future 5 days 
+        for (let i = 0; i < data.daily.length; i++) {
+            var loopTempElement = document.createElement("li")
+            var loopTemp = data.daily[i].temp.day
+            loopTempElement.textContent= loopTemp 
+            loopWeatherList.appendChild(loopTempElement)
+
+            var loopHumidElement = document.createElement("li")
+            var loopHumid = data.daily[i].humidity
+            loopHumidElement.textContent= loopHumid
+            loopWeatherList.appendChild(loopHumidElement)
+
+            var loopIconElement = document.createElement("img")
+            var loopIconId = data.daily[i].weather[0].icon
+            var loopIconPhoto = "http://openweathermap.org/img/wn/" + loopIconId +"@2x.png"
+            loopIconElement.src = loopIconPhoto
+            loopWeatherList.appendChild(loopIconElement)
+            
+            
+           
+            
+        }
+        weatherHolder.appendChild(loopWeatherList)
+
+        })
+
+        
+        
+    })          
+   
     
 
 
