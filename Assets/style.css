@@ -2,7 +2,7 @@ header {
     width: 100%;
     display: flex;
     background-color: black;
-    height: 15vh;
+    height: 20vh;
     justify-content: center;
     font-size: 40px;
     color: cornflowerblue;
@@ -30,4 +30,19 @@ header {
 .weatherList {
     font-weight: 600;
     
+}
+.green{
+    color:green;
+}
+.yellow{
+    color:yellow;
+}
+.orange{
+    color:orange;
+}
+.red{
+    color:red
+}
+.violet {
+    color:violet;
 }
