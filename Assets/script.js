@@ -1,28 +1,26 @@
-// on load function 1 that gets moment time 
+// on load function  that gets moment time 
 window.onload = function startPage() {
     var dayAndTime = moment().format('LL');
     console.log(dayAndTime)
 }
 
 
-
-
-// event listenerfor button that that inputs location. function it calls below
+// event listener for Primary search button that that takes the location and gives you the weather
 document.getElementById("locationButton").addEventListener("click", function (event) {
     event.preventDefault()
     // variables section for click function
     var searchInput = document.getElementById("textArea");
     var location = searchInput.value.trim()
     getWeatherForCity(location)
-    
-    
+
+    // sets searches in local strange, retrieves them and creates buttons to search for that location's weather again
     var nameFromLocal = []
     if (localStorage.getItem('names')) {
-    	nameFromLocal = JSON.parse(localStorage.getItem('names'))
+        nameFromLocal = JSON.parse(localStorage.getItem('names'))
     }
     nameFromLocal.push(location)
     console.log(nameFromLocal)
-	localStorage.setItem('names', JSON.stringify(nameFromLocal))
+    localStorage.setItem('names', JSON.stringify(nameFromLocal))
     var searchHolder = document.getElementById("searchDiv")
     var searchContainer = document.createElement("div")
     searchHolder.appendChild(searchContainer)
@@ -36,9 +34,6 @@ document.getElementById("locationButton").addEventListener("click", function (ev
         pastSearchesElement.innerHTML = nameFromLocal[i]
         searchHolder.appendChild(pastSearchesElement)
     }
-    // pastSearchesElement.textContent = `Past Searches: ${nameFromLocal}`
-    // searchContainer.appendChild(pastSearchesElement)
-
     // here I need a looping function that takes the array of selected elements and makes an event listener for each individual
     // element  it that when clickedc alls the getWeatherForCity function using the innerHTML of the element as the parameter
     var buttonElements = document.querySelectorAll(".grab")
@@ -46,14 +41,14 @@ document.getElementById("locationButton").addEventListener("click", function (ev
         console.log(buttonElements[i])
         // WHY DOENT THIS ONLY WORK ON CLICK???? IT RUNS EVERY TIME THE PAGE LOADS
         buttonElements[i].addEventListener("click", () => getWeatherForCity(buttonElements[i].innerHTML))
-        
+
     }
-    
+
 
 });
 
 
-
+// Function tha gives you the weather when called by event listener
 function getWeatherForCity(city) {
 
     var inputSectionElement = document.getElementById("container")
@@ -66,7 +61,7 @@ function getWeatherForCity(city) {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            
+
             console.log(data)
             var temperature = data.main.temp_max
             var humidity = data.main.humidity
@@ -80,7 +75,7 @@ function getWeatherForCity(city) {
             console.log(windSpeed, "mph Wind Speed")
             console.log(cityLatitude)
             console.log(cityLongitude)
-           
+
 
 
 
@@ -102,8 +97,16 @@ function getWeatherForCity(city) {
 
             // THIS IS WHERE MIM AND I WERE WORKING!!! THIS SHOULD EMPY THE THE LIST ELEMENT BUT REMOVE AND INNERHTML ARENT WORKING
             var listElement = document.querySelector(".weatherList")
-            if (listElement){
-                listElement.innerHTML =[]
+            if (listElement) {
+                listElement.remove()
+                var listElement2 = document.querySelector(".weatherList")
+                listElement2.remove()
+                var listElement3 = document.querySelector(".timeRemover")
+                listElement3.remove()
+                var listElement4 = document.querySelector(".cityHeader")
+                listElement4.remove()
+                var listElement5 = document.querySelector(".iconRemover")
+                listElement5.remove()
             }
             console.log(listElement, "this is not working ahhaa ")
             var cityWeatherList = document.createElement("ul")
@@ -121,10 +124,12 @@ function getWeatherForCity(city) {
             console.log(cityWind)
             cityWeatherList.appendChild(cityWind)
             var cityTime = document.createElement("h1")
+            cityTime.classList.add("timeRemover")
             cityTime.textContent = moment().format('ll');
             console.log(cityTime)
             weatherHolder.appendChild(cityTime)
             var cityWeatherIcon = document.createElement("img")
+            cityWeatherIcon.classList.add("iconRemover")
             cityWeatherIcon.src = weatherIconPhoto
             console.log(cityWeatherIcon)
             weatherHolder.appendChild(cityWeatherIcon)
@@ -137,26 +142,24 @@ function getWeatherForCity(city) {
                     var cityUv = document.createElement("li")
                     cityUv.textContent = data.current.uvi
                     // change the text color to the UVI index color to indicate severity 
-                    if(cityUv.textContent < 3) {
+                    if (cityUv.textContent < 3) {
                         cityUv.classList.add("green")
                     }
-                    else if(3 < cityUv.textContent < 6) {
+                    else if (3 < cityUv.textContent < 6) {
                         cityUv.classList.add("yellow")
                     }
-                    else if(6 < cityUv.textContent < 8) {
+                    else if (6 < cityUv.textContent < 8) {
                         cityUv.classList.add("orange")
                     }
-                    else if(8 < cityUv.textContent < 11) {
+                    else if (8 < cityUv.textContent < 11) {
                         cityUv.classList.add("red")
                     }
-                    else if(11 < cityUv.textContent) {
+                    else if (11 < cityUv.textContent) {
                         cityUv.classList.add("violet")
                     }
                     cityWeatherList.appendChild(cityUv)
                     weatherHolder.appendChild(cityWeatherList)
                     console.log(weatherHolder)
-
-
 
                     var loopWeatherList = document.createElement("ul")
                     loopWeatherList.classList.add("weatherList")
@@ -182,12 +185,6 @@ function getWeatherForCity(city) {
                         var loopHumid = data.daily[i].humidity
                         loopHumidElement.textContent = `${loopHumid} % Humidity`
                         loopWeatherList.appendChild(loopHumidElement)
-
-
-
-
-
-
 
                     }
                     weatherHolder.appendChild(loopWeatherList)
