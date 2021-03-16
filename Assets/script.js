@@ -15,6 +15,7 @@ document.getElementById("locationButton").addEventListener("click", function (ev
     var location = searchInput.value.trim()
     getWeatherForCity(location)
     
+    
     var nameFromLocal = []
     if (localStorage.getItem('names')) {
     	nameFromLocal = JSON.parse(localStorage.getItem('names'))
@@ -25,7 +26,7 @@ document.getElementById("locationButton").addEventListener("click", function (ev
     var searchHolder = document.getElementById("searchDiv")
     var searchContainer = document.createElement("div")
     searchHolder.appendChild(searchContainer)
-    
+
     for (let i = 0; i < nameFromLocal.length; i++) {
         var pastSearchesElement = document.createElement("button")
         pastSearchesElement.classList.add('btn-success')
@@ -44,7 +45,7 @@ document.getElementById("locationButton").addEventListener("click", function (ev
     for (let i = 0; i < buttonElements.length; i++) {
         console.log(buttonElements[i])
         // WHY DOENT THIS ONLY WORK ON CLICK???? IT RUNS EVERY TIME THE PAGE LOADS
-        // buttonElements[i].addEventListener("click", getWeatherForCity(buttonElements[i].innerHTML))
+        buttonElements[i].addEventListener("click", () => getWeatherForCity(buttonElements[i].innerHTML))
         
     }
     
@@ -65,6 +66,7 @@ function getWeatherForCity(city) {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+            
             console.log(data)
             var temperature = data.main.temp_max
             var humidity = data.main.humidity
@@ -78,6 +80,7 @@ function getWeatherForCity(city) {
             console.log(windSpeed, "mph Wind Speed")
             console.log(cityLatitude)
             console.log(cityLongitude)
+           
 
 
 
@@ -96,6 +99,13 @@ function getWeatherForCity(city) {
             console.log(weatherHolder)
 
             // create element that holds list of city's weather
+
+            // THIS IS WHERE MIM AND I WERE WORKING!!! THIS SHOULD EMPY THE THE LIST ELEMENT BUT REMOVE AND INNERHTML ARENT WORKING
+            var listElement = document.querySelector(".weatherList")
+            if (listElement){
+                listElement.innerHTML =[]
+            }
+            console.log(listElement, "this is not working ahhaa ")
             var cityWeatherList = document.createElement("ul")
             cityWeatherList.classList.add("weatherList")
             var cityTemperature = document.createElement("li")
