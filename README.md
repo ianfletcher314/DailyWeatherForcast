@@ -21,6 +21,15 @@ This should put a copy of the repository into the directory you had chosen in st
 ## Usage
 This application should allow users to input the name of a city and recieve the local weather in that city. Once searched the application displays an icon depicting the weather along with temperature, humidty, wind speed,  and UV index. Underneath todays forcast the user will be presented with a 5 day forcast that includes weather icon, temperature, and humidity. The search history of the user is presented in the form of buttons at the bottom. When the button is clicked the user is presented with the weather from the selected city just as if they had searched it. 
 
+##  Languages and Technologies Used
+Java Script 
+CSS
+HTML
+Moment
+Bootstrap
+Open Weather API
+
+
 
 ![alt text](Assets/images/weather2.png)
 ![alt text](Assets/images/weather1.png)
