@@ -31,8 +31,8 @@ Open Weather API <br />
 
 
 
-![alt text](Assets/images/weather2.png)
-![alt text](Assets/images/weather1.png)
+![WeatherImage1](Assets/images/weatherDashboardCopy.png)
+![WeatherImage2](Assets/images/weather1.png)
 
 [Check Out The Full Page](https://ianfletcher314.github.io/DailyWeatherForcast/)
 
